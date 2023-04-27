@@ -1,7 +1,13 @@
-import './App.css';
+import Header from './components/Header/Header';
+import Main from './components/Main/Main';
 
-function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
-}
+const App = () => {
+  return (
+    <div className="flex flex-col min-h-screen h-full bg-mainColor">
+      <Header />
+      <Main />
+    </div>
+  );
+};
 
 export default App;
