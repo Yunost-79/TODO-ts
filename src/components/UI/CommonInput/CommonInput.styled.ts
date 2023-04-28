@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { TextField } from '@mui/material';
 
-export const CommonTextField = styled(TextField)({
+export const CommonInput = styled(TextField)({
   '&.MuiTextField-root': {
     width: "100%",
     height: '100%',

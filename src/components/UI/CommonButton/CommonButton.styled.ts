@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Button } from '@mui/material';
 
-export const CommonBtn = styled(Button)({
+export const CommonButton = styled(Button)({
   '&.MuiButtonBase-root': {
     height: '100%',
     padding: '10px 30px',

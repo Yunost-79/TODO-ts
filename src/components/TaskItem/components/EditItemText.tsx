@@ -1,4 +1,4 @@
-import EditItemInput from '../../UI/EditItemInput/EditItemInput';
+import { EditItemInput } from '../../UI/EditItemInput/EditItemInput.styled';
 
 const EditItemText = () => {
   return (

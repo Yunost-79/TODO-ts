@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { TextField } from '@mui/material';
 
-export const EditTextField = styled(TextField)({
+export const EditItemInput = styled(TextField)({
   '&.MuiTextField-root': {
     width: '100%',
     bottom: '5px',

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import EditItemText from './components/EditItemText';
 import ItemText from './components/ItemText';
 
-import CommonCheckbox from '../UI/CommonCheckbox/CommonCheckbox';
 import CommonClose from '../UI/CommonClose/CommonClose';
+import { CommonCheckbox } from '../UI/CommonCheckbox/CommonCheckbox.styled';
 
 const TaskItem = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
