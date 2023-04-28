@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import EditItemText from './components/EditItemText';
 import ItemText from './components/ItemText';
 
-import CommonClose from '../UI/CommonClose/CommonClose';
-import { CommonCheckbox } from '../UI/CommonCheckbox/CommonCheckbox.styled';
+import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
+import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 
 const TaskItem = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -15,7 +15,7 @@ const TaskItem = () => {
     }
   };
 
-  const handleEndEdit = (e: React.MouseEvent<HTMLHeadingElement>): void => {
+  const handleEndEdit = (e: React.MouseEvent<SVGSVGElement>): void => {
     e.preventDefault();
     setIsEdit(false);
   };
@@ -29,7 +29,7 @@ const TaskItem = () => {
         {isEdit ? <EditItemText /> : <ItemText onClick={handleStartEdit} />}
       </div>
       <div className="flex justify-center items-center flex-taskItem-10">
-        <CommonClose onClick={handleEndEdit} />
+        <CommonCloseIcon onClick={handleEndEdit} />
       </div>
     </div>
   );

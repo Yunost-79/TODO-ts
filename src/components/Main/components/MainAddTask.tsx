@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
-import { CommonButton } from '../../UI/CommonButton/CommonButton.styled';
-import { CommonInput } from '../../UI/CommonInput/CommonInput.styled';
+import { CommonButton } from '../../UI/Common/CommonButton.styled';
+import { CommonInput } from '../../UI/Common/CommonInput.styled';
 
 interface IMainAddTask {
   todo: string;
