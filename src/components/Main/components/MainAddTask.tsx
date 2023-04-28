@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 import { CommonButton } from '../../UI/Common/CommonButton.styled';
 import { CommonInput } from '../../UI/Common/CommonInput.styled';
 
@@ -8,14 +11,19 @@ interface IMainAddTask {
   todo: string;
 }
 
+const schema = yup.object().shape({
+  todo: yup.string().required(),
+});
+
 const MainAddTask: React.FC = () => {
   const [todoValue, setTodoValue] = useState<string>('');
 
   const {
     control,
+    
     handleSubmit,
     formState: { errors },
-  } = useForm<IMainAddTask>();
+  } = useForm<IMainAddTask>({ resolver: yupResolver(schema) });
 
   const onSubmitTodo: SubmitHandler<IMainAddTask> = (data) => {
     console.log('todoDataValue submited', data);
