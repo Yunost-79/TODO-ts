@@ -1,4 +1,4 @@
-import emptyImage from '../../../../image/empty-icon.svg';
+import emptyImage from '../../../../../image/empty-icon.svg';
 
 const MainEmpty = () => {
   return (

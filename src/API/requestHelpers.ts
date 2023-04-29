@@ -38,7 +38,16 @@ export const deleteTodoById = async (id: string) => {
 
 export const editTodo = async (id: string, text: string) => {
   try {
-    const { data } = await instance.put('/task/update', {id, text});
+    const { data } = await instance.put('/task/update', { id, text });
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const changeStatus = async (id: string, status: string) => {
+  try {
+    const { data } = await instance.put('/task/change-status', { id, status });
     return data;
   } catch (error) {
     console.log(error);

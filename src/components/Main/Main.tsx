@@ -14,7 +14,7 @@ const Main = () => {
     <div className="flex flex-col justify-center items-center mt-8 ">
       <MainAddTask todo={''} />
 
-      <MainFiters setFilter={setFilter} />
+      <MainFiters filter={filter} setFilter={setFilter} />
 
       <MainTasks filter={filter} />
       <div className="mt-14 text-xs text-center text-commonGrey">

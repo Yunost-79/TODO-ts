@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { getAllTodo } from '../../../../API/requestHelpers';
 import TaskItem from '../../../TaskItem/TaskItem';
-import MainEmpty from './MainEmpty';
+import MainEmpty from './components/MainEmpty';
 
 interface IMainTask {
   filter: string;

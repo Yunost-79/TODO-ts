@@ -5,7 +5,7 @@ import ItemText from './components/ItemText';
 import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
 import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
-import { deleteTodoById, editTodo } from '../../API/requestHelpers';
+import { changeStatus, deleteTodoById, editTodo } from '../../API/requestHelpers';
 import { useMutation, useQueryClient } from 'react-query';
 
 interface ITaskItem {
@@ -43,10 +43,15 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
 
   const handleChecked = () => {
     setIsChecked(!isChecked);
+    changeStatus(taskData.id, 'completed');
+    setIsChecked(taskData?.status ? taskData.status : !isChecked);
+    // mutationChangeStatus.mutate(taskData.id, 'completed')
+    console.log(taskData);
   };
 
   const mutationDeleteById = useMutation((id: string) => deleteTodoById(id), { onSuccess: () => queryClient.invalidateQueries('todoData') });
   // const mutationEditTodo = useMutation((id, text) => deleteTodoById(t), { onSuccess: () => queryClient.invalidateQueries('todoData') });
+  // const mutationChangeStatus = useMutation((id: string, status: string) => changeStatus(id, status), { onSuccess: () => queryClient.invalidateQueries('todoData') });
 
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
