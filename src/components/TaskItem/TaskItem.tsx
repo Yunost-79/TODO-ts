@@ -6,7 +6,11 @@ import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
 import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
 
-const TaskItem = () => {
+interface ITaskItem {
+  todoData: any;
+}
+
+const TaskItem: React.FC<ITaskItem> = ({ todoData }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isEditValue, setIsEditValue] = useState<string>('');
@@ -47,7 +51,7 @@ const TaskItem = () => {
         {isEdit ? (
           <EditItemText value={isEditValue} onChange={(e) => setIsEditValue(e.target.value)} />
         ) : (
-          <ItemText isChecked={isChecked} onClick={handleStartEdit} confirmEditedText={confirmEditedText} />
+          <ItemText isChecked={isChecked} onClick={handleStartEdit} confirmEditedText={confirmEditedText} todoData={todoData} />
         )}
       </div>
 

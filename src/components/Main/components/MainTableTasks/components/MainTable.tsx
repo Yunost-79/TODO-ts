@@ -1,10 +1,17 @@
-import TaskItem from '../../../../TaskItem/TaskItem';
+import React from 'react';
 
-const MainItemTable = () => {
+import { getAllTodo } from '../../../../../API/requestHelpers';
+import TaskItem from '../../../../TaskItem/TaskItem';
+import { useQuery } from 'react-query';
+
+const MainItemTable: React.FC = () => {
+  const queryData = useQuery('todoData', getAllTodo);
+  const todoData = queryData.data;
+  console.log('todoData', todoData);
 
   return (
     <>
-      <TaskItem />
+      <TaskItem todoData={todoData} />
     </>
   );
 };
