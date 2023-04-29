@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useForm, SubmitHandler, Controller, Resolver } from 'react-hook-form';
-
-// import { yupResolver } from '@hookform/resolvers/yup';
-// import * as yup from 'yup';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import { CommonButton } from '../../UI/Common/CommonButton.styled';
 import { CommonInput } from '../../UI/Common/CommonInput.styled';
 import { postTodo } from '../../../API/requestHelpers';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface IMainAddTask {
   todo: string;
@@ -15,6 +13,10 @@ interface IMainAddTask {
 const MainAddTask: React.FC<IMainAddTask> = () => {
   const [todoValue, setTodoValue] = useState<string>('');
   const [errorValue, setErrorValue] = useState<boolean>(false);
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation((newTodo) => postTodo(String(newTodo), 'active'), { onSuccess: () => queryClient.invalidateQueries('todoData') });
 
   const {
     control,
@@ -29,11 +31,11 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
     }
     setErrorValue(false);
 
-    postTodo(String(todoValue), 'active');
+    mutation.mutate(todoValue);
     setTodoValue('');
   };
 
-  console.log('todoValue', todoValue);
+  // console.log('todoValue', todoValue);
 
   return (
     <form className="flex w-3/5 h-12 gap-2" onSubmit={handleSubmit(onSubmitTodo)}>

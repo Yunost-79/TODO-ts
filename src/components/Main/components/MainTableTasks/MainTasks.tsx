@@ -1,13 +1,25 @@
-import { useState } from 'react';
-
-import MainEmpty from './components/MainEmpty';
-import MainItemTable from './components/MainTable';
+import { useQuery } from 'react-query';
+import { getAllTodo } from '../../../../API/requestHelpers';
+import TaskItem from '../../../TaskItem/TaskItem';
+import MainEmpty from './MainEmpty';
 
 const MainTasks = () => {
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const queryData = useQuery('todoData', getAllTodo, { enabled: true, refetchIntervalInBackground: true });
+  const todoData = queryData.data;
+
   return (
-    <div className="flex flex-col justify-center items-center bg-headerColor w-3/5 px-6 py-10 rounded-lg">
-      {isEmpty ? <MainEmpty /> : <MainItemTable />}
+    <div className="flex flex-col justify-center items-center bg-headerColor w-3/5 px-6 py-10 gap-8 rounded-lg">
+      {!todoData?.tasks.length ? (
+        <MainEmpty />
+      ) : (
+        <>
+          {todoData?.tasks.map((task: any) => {
+            // console.log('task', task);
+
+            return <TaskItem key={task.id} taskData={task} />;
+          })}
+        </>
+      )}
     </div>
   );
 };

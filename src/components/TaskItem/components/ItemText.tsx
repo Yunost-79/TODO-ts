@@ -4,14 +4,13 @@ interface ItemTextProps {
   onClick: (e: React.MouseEvent<HTMLHeadingElement>) => void;
   isChecked: boolean;
   confirmEditedText: string | undefined;
-  todoData: object | undefined | null;
-
+  taskData: object ;
 }
 
-const ItemText: React.FC<ItemTextProps> = ({ onClick, isChecked, confirmEditedText, todoData }) => {
+const ItemText: React.FC<ItemTextProps> = ({ onClick, isChecked, confirmEditedText, taskData }) => {
   return (
     <div className={`w-full cursor-pointer ${isChecked ? 'line-through text-commonGrey' : ''}`} onClick={onClick}>
-      {confirmEditedText ? confirmEditedText : 'test'}
+      {confirmEditedText ? confirmEditedText : taskData.text}
     </div>
   );
 };

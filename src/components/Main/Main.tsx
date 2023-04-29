@@ -6,7 +6,7 @@ import MainFiters from '../MainFiters/MainFiters';
 const Main = () => {
   return (
     <div className="flex flex-col justify-center items-center mt-8 ">
-      <MainAddTask />
+      <MainAddTask  />
       <MainFiters />
 
       <MainTasks />

@@ -17,3 +17,13 @@ export const postTodo = async (text: string, status: string) => {
     console.log(error);
   }
 };
+
+export const deleteTodoById = async (id: string) => {
+  try {
+    const { data } = await instance.delete(`/task/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
