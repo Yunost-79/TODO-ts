@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-const MainFiters = () => {
+interface IMainFilter {
+  setFilter: (e: React.SetStateAction<string>) => void;
+}
+
+const MainFiters: React.FC<IMainFilter> = ({ setFilter }) => {
   const [isActive, setIsActive] = useState<number>();
 
   const fitersItems = [
@@ -9,8 +13,9 @@ const MainFiters = () => {
     { id: 3, label: 'Completed' },
   ];
 
-  const handleChooseFilter = (id: number) => {
+  const handleChooseFilter = (id: number, label: string) => {
     setIsActive(id);
+    setFilter(label);
   };
 
   return (
@@ -18,8 +23,10 @@ const MainFiters = () => {
       {fitersItems.map(({ id, label }) => {
         return (
           <div
-            className={`text-lg font-medium cursor-pointer ease-linear duration-200 ${isActive === id ? 'text-goldenYellow' : 'text-white'} hover:text-goldenYellow`}
-            onClick={() => handleChooseFilter(id)}
+            className={`text-lg font-medium cursor-pointer ease-linear duration-200 ${
+              isActive === id ? 'text-goldenYellow' : 'text-white'
+            } hover:text-goldenYellow`}
+            onClick={() => handleChooseFilter(id, label)}
             key={id}
           >
             {label}

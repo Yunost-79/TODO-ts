@@ -5,7 +5,7 @@ import ItemText from './components/ItemText';
 import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
 import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
-import { deleteTodoById } from '../../API/requestHelpers';
+import { deleteTodoById, editTodo } from '../../API/requestHelpers';
 import { useMutation, useQueryClient } from 'react-query';
 
 interface ITaskItem {
@@ -16,7 +16,6 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [isEditValue, setIsEditValue] = useState<string>('');
-  const [confirmEditedText, setConfirmEditedText] = useState<string>('');
 
   const queryClient = useQueryClient();
 
@@ -37,14 +36,17 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
   const handleConfirmEdit = (e: React.MouseEvent<SVGSVGElement>) => {
     e.preventDefault();
     setIsEdit(false);
-    setConfirmEditedText(isEditValue);
+    if (isEditValue) {
+      editTodo(taskData.id, isEditValue);
+    }
   };
 
   const handleChecked = () => {
     setIsChecked(!isChecked);
   };
 
-  const mutation = useMutation((todoId) => deleteTodoById(todoId), { onSuccess: () => queryClient.invalidateQueries('todoData') });
+  const mutationDeleteById = useMutation((id: string) => deleteTodoById(id), { onSuccess: () => queryClient.invalidateQueries('todoData') });
+  // const mutationEditTodo = useMutation((id, text) => deleteTodoById(t), { onSuccess: () => queryClient.invalidateQueries('todoData') });
 
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
@@ -55,7 +57,7 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
         {isEdit ? (
           <EditItemText value={isEditValue} onChange={(e) => setIsEditValue(e.target.value)} />
         ) : (
-          <ItemText isChecked={isChecked} onClick={handleStartEdit} confirmEditedText={confirmEditedText} taskData={taskData} />
+          <ItemText isChecked={isChecked} onClick={handleStartEdit} confirmEditedText={isEditValue} taskData={taskData} />
         )}
       </div>
 
@@ -65,7 +67,7 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
       <div className="flex justify-center items-center flex-taskItem-5">
         <CommonCloseIcon
           onClick={() => {
-            mutation.mutate(taskData.id);
+            mutationDeleteById.mutate(taskData.id);
           }}
         />
       </div>

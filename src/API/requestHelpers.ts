@@ -27,3 +27,20 @@ export const deleteTodoById = async (id: string) => {
   }
 };
 
+// export const deleteAllTodo = async () => {
+//   try {
+//     const { data } = await instance.delete('/tasks/:ids');
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+export const editTodo = async (id: string, text: string) => {
+  try {
+    const { data } = await instance.put('/task/update', {id, text});
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
