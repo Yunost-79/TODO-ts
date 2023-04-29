@@ -9,42 +9,31 @@ import { CommonInput } from '../../UI/Common/CommonInput.styled';
 import { postTodo } from '../../../API/requestHelpers';
 
 interface IMainAddTask {
-  data: object | undefined;
   todo: string;
 }
 
-// const schema = yup.object().shape({
-//   todo: yup.string(),
-// });
-
-const resolver: Resolver<IMainAddTask> = async (values) => {
-  return {
-    values: values.todo ? values : {},
-    errors:
-      !values.todo && values.todo === undefined
-        ? {
-            todo: {
-              type: 'required',
-              message: 'This is required field',
-            },
-          }
-        : {},
-  };
-};
-
 const MainAddTask: React.FC<IMainAddTask> = () => {
   const [todoValue, setTodoValue] = useState<string>('');
+  const [errorValue, setErrorValue] = useState<boolean>(false);
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm<IMainAddTask>({ resolver });
+    // formState: { errors },
+  } = useForm<IMainAddTask>({});
 
-  const onSubmitTodo: SubmitHandler<IMainAddTask> = (data) => {
-    postTodo(String(data.todo), 'active');
+  const onSubmitTodo: SubmitHandler<IMainAddTask> = () => {
+    if (!todoValue) {
+      setErrorValue(true);
+      return;
+    }
+    setErrorValue(false);
+
+    postTodo(String(todoValue), 'active');
     setTodoValue('');
   };
+
+  console.log('todoValue', todoValue);
 
   return (
     <form className="flex w-3/5 h-12 gap-2" onSubmit={handleSubmit(onSubmitTodo)}>
@@ -59,8 +48,8 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
             variant="outlined"
             value={todoValue}
             onChange={(e) => setTodoValue(e.target.value)}
-            error={!!errors.todo ? !!errors.todo : false}
-            helperText={errors.todo ? errors.todo?.message : ''}
+            error={errorValue}
+            helperText={errorValue ? 'Required field' : ''}
           />
         )}
       />
