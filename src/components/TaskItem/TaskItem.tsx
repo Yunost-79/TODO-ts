@@ -41,11 +41,17 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
     }
   };
 
-  const handleChecked = () => {
+  const handleChecked = (id: string) => {
     setIsChecked(!isChecked);
-    changeStatus(taskData.id, 'completed');
-    setIsChecked(taskData?.status ? taskData.status : !isChecked);
-    // mutationChangeStatus.mutate(taskData.id, 'completed')
+
+    if (!isChecked) {
+      changeStatus(taskData.id, 'completed');
+    } else {
+      changeStatus(taskData.id, 'active');
+    }
+
+    // setIsChecked(taskData?.status ? true : !isChecked);
+    // console.log(taskData);
     console.log(taskData);
   };
 
@@ -56,7 +62,7 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
       <div className="flex justify-center items-center flex-taskItem-5">
-        <CommonCheckbox checked={isChecked} onChange={handleChecked} />
+        <CommonCheckbox checked={isChecked} onChange={() => handleChecked(taskData.id)} />
       </div>
       <div className="flex justify-start items-center flex-taskItem-85 w-full">
         {isEdit ? (

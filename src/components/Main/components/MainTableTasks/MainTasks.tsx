@@ -12,12 +12,25 @@ const MainTasks: React.FC<IMainTask> = ({ filter }) => {
   const todoData = queryData.data;
 
   const renderMainByFilter = (filter: string) => {
-    if (filter === 'All') {
-      return todoData;
+    // if (filter === 'All') {
+    //   return todoData;
+    // }
+    if (filter === 'Active') {
+      const activeTodoData = todoData?.tasks?.filter((item: object) => {
+        // console.log('item', item);
+
+        return item.status === 'active';
+      });
+      console.log('activeTodoData', activeTodoData);
+
+      return activeTodoData;
     }
+    console.log('todoData', todoData);
+
+    return todoData?.tasks || [];
   };
 
-  console.log(renderMainByFilter(filter));
+  console.log('renderPath', renderMainByFilter(filter));
 
   const renderPath = renderMainByFilter(filter);
 
@@ -27,7 +40,7 @@ const MainTasks: React.FC<IMainTask> = ({ filter }) => {
         <MainEmpty />
       ) : (
         <>
-          {renderPath?.tasks.map((task: any) => {
+          {renderPath?.map((task: object) => {
             return <TaskItem key={task.id} taskData={task} />;
           })}
           {/* {
