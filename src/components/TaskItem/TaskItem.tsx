@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -17,7 +17,7 @@ interface ITaskItem {
 
 const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>();
   const [isEditValue, setIsEditValue] = useState<string>('');
 
   const queryClient = useQueryClient();
@@ -37,6 +37,8 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
   };
 
   const handleChecked = (id: string, statusActive: string, statusCompleted: string) => {
+    setIsChecked(false);
+
     if (!isChecked) {
       mutationStatus.mutate({ ids: id, status: statusCompleted });
       setIsChecked(true);
@@ -56,14 +58,14 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
       {/* ========== problem bug need double click ========== */}
       <div className="flex justify-center items-center flex-taskItem-5">
-        <CommonCheckbox checked={taskData?.status === 'completed' && isChecked} onChange={() => handleChecked(taskData.id, 'active', 'completed')} />
+        <CommonCheckbox checked={taskData?.status === 'active' ? false : true} onChange={() => handleChecked(taskData.id, 'active', 'completed')} />
       </div>
       <div className="flex justify-start items-center flex-taskItem-85 w-full">
         {isEdit ? (
           <EditItemText value={isEditValue} onChange={(e) => setIsEditValue(e.target.value)} />
         ) : (
           <ItemText
-            isChecked={taskData?.status === 'completed' && isChecked}
+            isChecked={taskData?.status === 'active' ? false : true}
             onClick={handleStartEdit}
             confirmEditedText={isEditValue}
             taskData={taskData}
