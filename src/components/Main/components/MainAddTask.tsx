@@ -7,7 +7,7 @@ import { postTodo } from '../../../API/requestHelpers';
 import { useMutation, useQueryClient } from 'react-query';
 
 interface IMainAddTask {
-  todo: string;
+  todo?: string;
 }
 
 const MainAddTask: React.FC<IMainAddTask> = () => {
@@ -15,6 +15,8 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
   const [errorValue, setErrorValue] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
+
+  // if change in mutation => postTodo => "active" on "completed" can see filter active and completed
 
   const mutation = useMutation((newTodo) => postTodo(String(newTodo), 'active'), { onSuccess: () => queryClient.invalidateQueries('todoData') });
 
@@ -35,7 +37,6 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
     setTodoValue('');
   };
 
-  // console.log('todoValue', todoValue);
 
   return (
     <form className="flex w-3/5 h-12 gap-2" onSubmit={handleSubmit(onSubmitTodo)}>

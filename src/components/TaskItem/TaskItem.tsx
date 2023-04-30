@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useMutation, useQueryClient } from 'react-query';
+
+import { deleteTodoById, editTodo, changeStatus } from '../../API/requestHelpers';
+
 import EditItemText from './components/EditItemText';
 import ItemText from './components/ItemText';
 
 import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
 import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
-import { changeStatus, deleteTodoById, editTodo } from '../../API/requestHelpers';
-import { useMutation, useQueryClient } from 'react-query';
 
 interface ITaskItem {
-  taskData: any;
+  taskData: object;
 }
 
 const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
@@ -26,54 +29,50 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
     }
   };
 
-  // const handleEndEdit = (e: React.MouseEvent<SVGSVGElement>) => {
-  //   e.preventDefault();
-  //   setIsEdit(false);
-  //   setIsEditValue('');
-  //   setConfirmEditedText('');
-  // };
-
-  const handleConfirmEdit = (e: React.MouseEvent<SVGSVGElement>) => {
-    e.preventDefault();
+  const handleConfirmEdit = (id: string, edit: string, status: string) => {
     setIsEdit(false);
     if (isEditValue) {
-      editTodo(taskData.id, isEditValue);
+      editTodo(id, edit, status);
     }
   };
 
-  const handleChecked = (id: string) => {
-    setIsChecked(!isChecked);
-
+  const handleChecked = (id: string, statusActive: string, statusCompleted: string) => {
     if (!isChecked) {
-      changeStatus(taskData.id, 'completed');
-    } else {
-      changeStatus(taskData.id, 'active');
+      mutationStatus.mutate({ ids: id, status: statusCompleted });
+      setIsChecked(true);
+      return;
     }
-
-    // setIsChecked(taskData?.status ? true : !isChecked);
-    // console.log(taskData);
-    console.log(taskData);
+    if (isChecked) {
+      mutationStatus.mutate({ ids: id, status: statusActive });
+      setIsChecked(false);
+    }
   };
 
   const mutationDeleteById = useMutation((id: string) => deleteTodoById(id), { onSuccess: () => queryClient.invalidateQueries('todoData') });
-  // const mutationEditTodo = useMutation((id, text) => deleteTodoById(t), { onSuccess: () => queryClient.invalidateQueries('todoData') });
-  // const mutationChangeStatus = useMutation((id: string, status: string) => changeStatus(id, status), { onSuccess: () => queryClient.invalidateQueries('todoData') });
+
+  const mutationStatus = useMutation({ mutationFn: changeStatus, onSuccess: () => queryClient.invalidateQueries('todoData') });
 
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
+      {/* ========== problem bug need double click ========== */}
       <div className="flex justify-center items-center flex-taskItem-5">
-        <CommonCheckbox checked={isChecked} onChange={() => handleChecked(taskData.id)} />
+        <CommonCheckbox checked={taskData?.status === 'completed' && isChecked} onChange={() => handleChecked(taskData.id, 'active', 'completed')} />
       </div>
       <div className="flex justify-start items-center flex-taskItem-85 w-full">
         {isEdit ? (
           <EditItemText value={isEditValue} onChange={(e) => setIsEditValue(e.target.value)} />
         ) : (
-          <ItemText isChecked={isChecked} onClick={handleStartEdit} confirmEditedText={isEditValue} taskData={taskData} />
+          <ItemText
+            isChecked={taskData?.status === 'completed' && isChecked}
+            onClick={handleStartEdit}
+            confirmEditedText={isEditValue}
+            taskData={taskData}
+          />
         )}
       </div>
 
-      <div className="flex justify-center items-center flex-taskItem-5">
-        <CommonCheckMarkIcon onClick={handleConfirmEdit} />
+      <div className="flex justify-center items-center flex-taskItem-10">
+        <CommonCheckMarkIcon onClick={() => handleConfirmEdit(taskData.id, isEditValue, taskData.status)} />
       </div>
       <div className="flex justify-center items-center flex-taskItem-5">
         <CommonCloseIcon

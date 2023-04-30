@@ -27,7 +27,7 @@ export const deleteTodoById = async (id: string) => {
   }
 };
 
-// export const deleteAllTodo = async () => {
+// export const deleteCompletedTodoById = async () => {
 //   try {
 //     const { data } = await instance.delete('/tasks/:ids');
 //     return data;
@@ -36,18 +36,19 @@ export const deleteTodoById = async (id: string) => {
 //   }
 // };
 
-export const editTodo = async (id: string, text: string) => {
+export const editTodo = async (id: string, text: string, status: string) => {
   try {
-    const { data } = await instance.put('/task/update', { id, text });
+    const { data } = await instance.put('/task/update', { id, text, status });
+
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const changeStatus = async (id: string, status: string) => {
+export const changeStatus = async ({ ids, status }) => {
   try {
-    const { data } = await instance.put('/task/change-status', { id, status });
+    const { data } = await instance.put('/task/change-status', { ids, status });
     return data;
   } catch (error) {
     console.log(error);
