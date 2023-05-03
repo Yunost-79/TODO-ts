@@ -10,7 +10,7 @@ import ItemText from './components/ItemText';
 import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
 import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
-import { EVariables, IRequestHelpers } from '../../variables/tsVariables';
+import { EVariables } from '../../variables/tsVariables';
 
 interface ITaskItem {
   taskData: TData;
@@ -32,7 +32,6 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
 
   const handleConfirmEdit = (id: string, edit: string, status: string) => {
     if (isEditValue && !/^ *$/.test(isEditValue)) {
-      // updateTodo(id, edit, status);
       handleUpdateTask.mutate({ id, text: edit, status });
 
       setIsEdit(false);
