@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 import { useMutation, useQueryClient } from 'react-query';
 
-import { deleteTodoById, editTodo, changeStatus } from '../../API/requestHelpers';
+import { deleteTodoById, changeStatus, updateTodo } from '../../API/requestHelpers';
+
 
 import EditItemText from './components/EditItemText';
 import ItemText from './components/ItemText';
@@ -10,9 +11,12 @@ import ItemText from './components/ItemText';
 import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
 import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
+import { EVariables, IRequestHelpers } from '../../variables/tsVariables';
+
+
 
 interface ITaskItem {
-  taskData: object;
+  taskData: IRequestHelpers;
 }
 
 const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
@@ -29,24 +33,26 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
     }
   };
 
+
   const handleConfirmEdit = (id: string, edit: string, status: string) => {
     setIsEdit(false);
     if (isEditValue) {
-      editTodo(id, edit, status);
+      updateTodo(id, edit, status);
     }
   };
 
   const handleChecked = (id: string, statusActive: string, statusCompleted: string) => {
     setIsChecked(false);
 
+    if (isChecked) {
+      mutationStatus.mutate({ ids: id, status: statusActive });
+      setIsChecked(false);
+      return;
+    }
     if (!isChecked) {
       mutationStatus.mutate({ ids: id, status: statusCompleted });
       setIsChecked(true);
       return;
-    }
-    if (isChecked) {
-      mutationStatus.mutate({ ids: id, status: statusActive });
-      setIsChecked(false);
     }
   };
 
@@ -54,18 +60,23 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
 
   const mutationStatus = useMutation({ mutationFn: changeStatus, onSuccess: () => queryClient.invalidateQueries('todoData') });
 
+  console.log('taskData', taskData);
+
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
       {/* ========== problem bug need double click ========== */}
       <div className="flex justify-center items-center flex-taskItem-5">
-        <CommonCheckbox checked={taskData?.status === 'active' ? false : true} onChange={() => handleChecked(taskData.id, 'active', 'completed')} />
+        <CommonCheckbox
+          checked={taskData?.status === EVariables.completed}
+          onChange={() => handleChecked(taskData.id, EVariables.active, EVariables.completed)}
+        />
       </div>
       <div className="flex justify-start items-center flex-taskItem-85 w-full">
         {isEdit ? (
           <EditItemText value={isEditValue} onChange={(e) => setIsEditValue(e.target.value)} />
         ) : (
           <ItemText
-            isChecked={taskData?.status === 'active' ? false : true}
+            isChecked={taskData?.status === EVariables.completed}
             onClick={handleStartEdit}
             confirmEditedText={isEditValue}
             taskData={taskData}
@@ -74,7 +85,7 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
       </div>
 
       <div className="flex justify-center items-center flex-taskItem-10">
-        <CommonCheckMarkIcon onClick={() => handleConfirmEdit(taskData.id, isEditValue, taskData.status)} />
+        <CommonCheckMarkIcon className={`${!isEdit && 'invisible'}`} onClick={() => handleConfirmEdit(taskData.id, isEditValue, taskData.status)} />
       </div>
       <div className="flex justify-center items-center flex-taskItem-5">
         <CommonCloseIcon

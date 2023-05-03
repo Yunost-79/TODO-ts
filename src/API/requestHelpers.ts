@@ -1,8 +1,11 @@
+import { IRequestHelpers } from '../variables/tsVariables';
 import { instance } from './axiosInstance';
 
 export const getAllTodo = async () => {
   try {
-    const { data } = await instance.get('/tasks');
+    const { data } = await instance.get<IRequestHelpers>('/tasks');
+    console.log('data', data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -11,7 +14,7 @@ export const getAllTodo = async () => {
 
 export const postTodo = async (text: string, status: string) => {
   try {
-    const { data } = await instance.post('/create-task', { text, status });
+    const { data } = await instance.post<IRequestHelpers>('/create-task', { text, status });
     return data;
   } catch (error) {
     console.log(error);
@@ -20,7 +23,7 @@ export const postTodo = async (text: string, status: string) => {
 
 export const deleteTodoById = async (id: string) => {
   try {
-    const { data } = await instance.delete(`/task/${id}`);
+    const { data } = await instance.delete<IRequestHelpers>(`/task/${id}`);
     return data;
   } catch (error) {
     console.log(error);
@@ -29,16 +32,16 @@ export const deleteTodoById = async (id: string) => {
 
 // export const deleteCompletedTodoById = async () => {
 //   try {
-//     const { data } = await instance.delete('/tasks/:ids');
+//     const { data } = await instance.delete<IRequestHelpers>('/tasks/:ids');
 //     return data;
 //   } catch (error) {
 //     console.log(error);
 //   }
 // };
 
-export const editTodo = async (id: string, text: string, status: string) => {
+export const updateTodo = async (id: string, text: string, status: string) => {
   try {
-    const { data } = await instance.put('/task/update', { id, text, status });
+    const { data } = await instance.put<IRequestHelpers>('/task/update', { id, text, status });
 
     return data;
   } catch (error) {
@@ -46,9 +49,10 @@ export const editTodo = async (id: string, text: string, status: string) => {
   }
 };
 
-export const changeStatus = async ({ ids, status }) => {
+export const changeStatus = async ({ ids, status }: IRequestHelpers) => {
   try {
-    const { data } = await instance.put('/task/change-status', { ids, status });
+    console.log('changeStatus data', ids, status);
+    const { data } = await instance.put<IRequestHelpers>('/task/change-status', { ids, status });
     return data;
   } catch (error) {
     console.log(error);

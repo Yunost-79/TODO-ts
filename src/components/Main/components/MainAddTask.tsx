@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { CommonButton } from '../../UI/Common/CommonButton.styled';
 import { CommonInput } from '../../UI/Common/CommonInput.styled';
 import { postTodo } from '../../../API/requestHelpers';
-import { useMutation, useQueryClient } from 'react-query';
 
 interface IMainAddTask {
   todo?: string;
@@ -18,7 +19,9 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
 
   // if change in mutation => postTodo => "active" on "completed" can see filter active and completed
 
-  const mutation = useMutation((newTodo) => postTodo(String(newTodo), 'active'), { onSuccess: () => queryClient.invalidateQueries('todoData') });
+  const mutation = useMutation((newTodo: string) => postTodo(String(newTodo), 'active'), { onSuccess: () => queryClient.invalidateQueries('todoData') });
+
+  console.log('mutation', mutation);
 
   const {
     control,
@@ -37,7 +40,6 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
     setTodoValue('');
   };
 
-
   return (
     <form className="flex w-3/5 h-12 gap-2" onSubmit={handleSubmit(onSubmitTodo)}>
       <Controller
@@ -52,7 +54,7 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
             value={todoValue}
             onChange={(e) => setTodoValue(e.target.value)}
             error={errorValue}
-            helperText={errorValue ? 'Required field' : ''}
+            helperText={errorValue && 'Required field' }
           />
         )}
       />

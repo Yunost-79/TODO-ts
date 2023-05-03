@@ -1,28 +1,38 @@
+import {useMemo} from 'react'
+
+import { TFiltersObject, fitersItems } from "../../variables/tsVariables";
+
 interface IMainFiter {
-  filter: object;
+  filter: TFiltersObject;
   setFilter: (e: React.SetStateAction<string>) => void;
 }
 
 const MainFilters: React.FC<IMainFiter> = ({ filter, setFilter }) => {
-  const fitersItems = [
-    { id: 1, label: 'All', value: 'all' },
-    { id: 2, label: 'Active', value: 'active' },
-    { id: 3, label: 'Completed', value: 'completed' },
-  ];
 
-  const handleChooseFilter = (item: object) => {
+
+  const handleChooseFilter = (item: string) => {
     setFilter(item);
   };
 
+  const filteredItems = useMemo(() => {
+    return fitersItems.map((item: TFiltersObject) => {
+      return {
+        ...item,
+        active: filter.id === item.id,
+        onClick: () => handleChooseFilter(item),
+      };
+    });
+  }, [filter.id]);
+
   return (
     <div className="flex justify-center items-center gap-10 my-8">
-      {fitersItems.map((item: object) => {
+      {filteredItems.map((item) => {
         return (
           <div
             className={`text-lg font-medium cursor-pointer ease-linear duration-200 hover:text-goldenYellow ${
-              filter.id === item.id ? 'text-goldenYellow' : 'text-white'
+              item.active ? "text-goldenYellow" : "text-white"
             }`}
-            onClick={() => handleChooseFilter(item)}
+            onClick={item.onClick}
             key={item.id}
           >
             {item.label}

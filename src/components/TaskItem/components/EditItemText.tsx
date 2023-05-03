@@ -9,6 +9,7 @@ const EditItemText: React.FC<IEditItemText> = ({ value, onChange }) => {
   return (
     <>
       <EditItemInput variant="standard" focused label="Edit task" value={value} onChange={onChange} />
+      
     </>
   );
 };

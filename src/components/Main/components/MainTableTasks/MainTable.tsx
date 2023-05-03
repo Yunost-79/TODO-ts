@@ -1,6 +1,6 @@
 
-import { getAllTodo } from '../../../../../API/requestHelpers';
-import TaskItem from '../../../../TaskItem/TaskItem';
+import { getAllTodo } from '../../../../API/requestHelpers';
+import TaskItem from '../../../TaskItem/TaskItem';
 import { useQuery } from 'react-query';
 
 const MainItemTable = () => {

@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { Link } from '@mui/material';
 
 import MainAddTask from './components/MainAddTask';
-import MainTasks from './components/MainTableTasks/MainTasks';
+import MainTasks from './components/MainTasks';
 import MainFilters from '../MainFilters/MainFilters';
+import { TFiltersObject } from '../../variables/tsVariables';
 
 interface IMain {
-  id: number;
-  value: string;
+  filter: TFiltersObject;
 }
 
 const Main: React.FC<IMain> = () => {
