@@ -33,13 +33,11 @@ const MainTasks: React.FC<IMainTask> = ({ filter }) => {
 
   const getTasks = getFilteredTasks(data, filter.value);
 
-  console.log('getTasks', getTasks);
+  // console.log('getTasks', getTasks);
 
   const handleDeleteCompleted = () => {
     const completedTasks = getTasks.map((task: TData) => task.id);
     const updated = JSON.stringify(completedTasks);
-
-    console.log('completedTasks', updated);
 
     handleDeleteById.mutate(updated);
   };

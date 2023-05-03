@@ -23,8 +23,6 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
     onSuccess: () => queryClient.invalidateQueries('todoData'),
   });
 
-  console.log('mutation', mutation);
-
   const {
     control,
     handleSubmit,

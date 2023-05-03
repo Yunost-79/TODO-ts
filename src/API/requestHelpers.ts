@@ -52,6 +52,7 @@ export const updateTodo = async (id: string, text: string, status: string) => {
 export const changeStatus = async ({ ids, status }: IRequestHelpers) => {
   try {
     const { data } = await instance.put<IRequestHelpers>('/task/change-status', { ids, status });
+    
     return data;
   } catch (error) {
     console.log(error);
