@@ -13,7 +13,7 @@ import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
 import { EVariables } from '../../variables/tsVariables';
 
 interface ITaskItem {
-  taskData: TData;
+  taskData?: TData;
 }
 
 const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
