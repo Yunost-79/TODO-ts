@@ -1,4 +1,4 @@
-import { IRequestHelpers } from '../variables/tsVariables';
+import { IRequestHelpers, TData } from '../variables/tsVariables';
 import { instance } from './axiosInstance';
 
 export const getAllTodo = async () => {
@@ -32,14 +32,14 @@ export const deleteTodoById = async (id: string) => {
 export const deleteAllCompletedTodo = async (arrayOfIds: string) => {
   try {
     const { data } = await instance.delete<IRequestHelpers>(`/tasks/${arrayOfIds}`);
-    
+
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateTodo = async (id: string, text: string, status: string) => {
+export const updateTodo = async ({ id, text, status }: IRequestHelpers) => {
   try {
     const { data } = await instance.put<IRequestHelpers>('/task/update', { id, text, status });
 
@@ -52,7 +52,7 @@ export const updateTodo = async (id: string, text: string, status: string) => {
 export const changeStatus = async ({ ids, status }: IRequestHelpers) => {
   try {
     const { data } = await instance.put<IRequestHelpers>('/task/change-status', { ids, status });
-    
+
     return data;
   } catch (error) {
     console.log(error);

@@ -20,12 +20,16 @@ export type TData = {
     status: string;
     id: string;
   };
+  id: string;
+  text: string;
 };
 
 export interface IRequestHelpers {
   data?: TData;
   ids: string;
-  status: string;
+
+  status: string; 
+
 }
 
 export enum EVariables {

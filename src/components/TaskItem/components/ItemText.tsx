@@ -10,7 +10,7 @@ interface ItemTextProps {
 const ItemText: React.FC<ItemTextProps> = ({ onClick, isChecked, confirmEditedText, taskData }) => {
   return (
     <div className={`w-full cursor-pointer ${isChecked ? 'line-through text-commonGrey' : ''}`} onClick={onClick}>
-      {confirmEditedText ? confirmEditedText : taskData.text}
+      {taskData.text}
     </div>
   );
 };

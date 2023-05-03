@@ -32,7 +32,9 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
 
   const handleConfirmEdit = (id: string, edit: string, status: string) => {
     if (isEditValue && !/^ *$/.test(isEditValue)) {
-      updateTodo(id, edit, status);
+      // updateTodo(id, edit, status);
+      handleUpdateTask.mutate({ id, text: edit, status });
+
       setIsEdit(false);
     } else {
       handleDeleteById.mutate(id);
@@ -58,8 +60,9 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
 
   const handleDeleteById = useMutation((id: string) => deleteTodoById(id), { onSuccess: () => queryClient.invalidateQueries('todoData') });
 
-
   const handleUpdateStatus = useMutation({ mutationFn: changeStatus, onSuccess: () => queryClient.invalidateQueries('todoData') });
+
+  const handleUpdateTask = useMutation({ mutationFn: updateTodo, onSuccess: () => queryClient.invalidateQueries('todoData') });
 
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
