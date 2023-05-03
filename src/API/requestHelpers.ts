@@ -4,7 +4,6 @@ import { instance } from './axiosInstance';
 export const getAllTodo = async () => {
   try {
     const { data } = await instance.get<IRequestHelpers>('/tasks');
-    console.log('data', data);
 
     return data;
   } catch (error) {
@@ -30,14 +29,15 @@ export const deleteTodoById = async (id: string) => {
   }
 };
 
-// export const deleteCompletedTodoById = async () => {
-//   try {
-//     const { data } = await instance.delete<IRequestHelpers>('/tasks/:ids');
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+export const deleteAllCompletedTodo = async (arrayOfIds: string) => {
+  try {
+    const { data } = await instance.delete<IRequestHelpers>(`/tasks/${arrayOfIds}`);
+    
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const updateTodo = async (id: string, text: string, status: string) => {
   try {
@@ -51,7 +51,6 @@ export const updateTodo = async (id: string, text: string, status: string) => {
 
 export const changeStatus = async ({ ids, status }: IRequestHelpers) => {
   try {
-    console.log('changeStatus data', ids, status);
     const { data } = await instance.put<IRequestHelpers>('/task/change-status', { ids, status });
     return data;
   } catch (error) {

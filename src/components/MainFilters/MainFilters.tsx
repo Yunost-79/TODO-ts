@@ -2,12 +2,12 @@ import {useMemo} from 'react'
 
 import { TFiltersObject, fitersItems } from "../../variables/tsVariables";
 
-interface IMainFiter {
+interface IMainFilter {
   filter: TFiltersObject;
   setFilter: (e: React.SetStateAction<string>) => void;
 }
 
-const MainFilters: React.FC<IMainFiter> = ({ filter, setFilter }) => {
+const MainFilters: React.FC<IMainFilter> = ({ filter, setFilter }) => {
 
 
   const handleChooseFilter = (item: string) => {

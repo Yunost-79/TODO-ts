@@ -23,7 +23,6 @@ export type TData = {
 };
 
 export interface IRequestHelpers {
-  id: number | string | null | undefined;
   data?: TData;
   ids: string;
   status: string;

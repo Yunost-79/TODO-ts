@@ -19,7 +19,9 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
 
   // if change in mutation => postTodo => "active" on "completed" can see filter active and completed
 
-  const mutation = useMutation((newTodo: string) => postTodo(String(newTodo), 'active'), { onSuccess: () => queryClient.invalidateQueries('todoData') });
+  const mutation = useMutation((newTodo: string) => postTodo(String(newTodo), 'active'), {
+    onSuccess: () => queryClient.invalidateQueries('todoData'),
+  });
 
   console.log('mutation', mutation);
 
@@ -34,10 +36,13 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
       setErrorValue(true);
       return;
     }
-    setErrorValue(false);
 
-    mutation.mutate(todoValue);
+    if (!/^ *$/.test(todoValue)) {
+      mutation.mutate(todoValue);
+      setErrorValue(false);
+    }
     setTodoValue('');
+
   };
 
   return (
@@ -54,7 +59,7 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
             value={todoValue}
             onChange={(e) => setTodoValue(e.target.value)}
             error={errorValue}
-            helperText={errorValue && 'Required field' }
+            helperText={errorValue && 'Required field'}
           />
         )}
       />
