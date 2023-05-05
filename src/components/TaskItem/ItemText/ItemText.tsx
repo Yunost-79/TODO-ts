@@ -1,13 +1,14 @@
 import React from 'react';
+import { TTasks } from '../../../types/typesAndInterfaces';
 
 interface ItemTextProps {
   onClick: (e: React.MouseEvent<HTMLHeadingElement>) => void;
   isChecked: boolean;
   confirmEditedText: string | undefined;
-  taskData: object ;
+  taskData: TTasks;
 }
 
-const ItemText: React.FC<ItemTextProps> = ({ onClick, isChecked, confirmEditedText, taskData }) => {
+const ItemText: React.FC<ItemTextProps> = ({ onClick, isChecked, taskData }) => {
   return (
     <div className={`w-full cursor-pointer ${isChecked ? 'line-through text-commonGrey' : ''}`} onClick={onClick}>
       {taskData.text}
