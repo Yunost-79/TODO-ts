@@ -15,13 +15,10 @@ export const useTaskItem = () => {
 
   const handleUpdateTask = useMutation({ mutationFn: updateTodo, onSuccess: () => queryClient.invalidateQueries('todoData') });
 
-  const handleStartEdit = (e: React.MouseEvent<HTMLHeadingElement>, text: string) => {
+  const handleStartEdit = (text: string) => {
     setEditValue(text);
 
-    // ====================== Double click tracking ======================
-    if (e.detail === 2) {
-      setIsEdit(true);
-    }
+    setIsEdit(true);
   };
 
   const handleConfirmEdit = (id: string, edit: string, status: string) => {

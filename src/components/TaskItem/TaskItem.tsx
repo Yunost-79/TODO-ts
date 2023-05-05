@@ -31,7 +31,7 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
         ) : (
           <ItemText
             isChecked={taskData?.status === EVariables.completed}
-            onClick={(e) => handleStartEdit(e, taskData.text)}
+            onDoubleClick={() => handleStartEdit(taskData.text)}
             confirmEditedText={taskData.text}
             taskData={taskData}
           />
