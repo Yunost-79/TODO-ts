@@ -4,7 +4,7 @@ import { useMainTasks } from '../../hooks/useMainTasks';
 
 import { EVariables } from '../../variables';
 
-import { IRequestHelpers, TData, TFiltersObject, TTasks } from '../../types/typesAndInterfaces';
+import { TData, TFiltersObject, TTasks } from '../../types/typesAndInterfaces';
 
 import TaskItem from '../TaskItem/TaskItem';
 
@@ -12,16 +12,18 @@ import emptyImage from '../../image/empty-icon.svg';
 
 interface IMainTask {
   filter: TFiltersObject;
-  data?: TData;
+  data: TData | [];
 }
 
 const MainTasks: React.FC<IMainTask> = ({ filter }) => {
-  const { data } = useQuery('todoData', getAllTodo, { refetchIntervalInBackground: true });
+
+  const {  data } = useQuery('todoData', getAllTodo);
+
 
   const { getFilteredTasks, handleDeleteCompleted, handleAllChangeStatus } = useMainTasks();
 
-  const allTasks: TTasks[] = getFilteredTasks(data?.tasks, filter.value);
-  console.log(allTasks);
+  // useQuery when is loading data from server return undefined, So, idk how to fix it)))
+  const allTasks = getFilteredTasks(data?.tasks, filter.value);
 
   return (
     <div className="flex flex-col justify-center items-center bg-headerColor w-3/5 px-6 py-10 gap-8 rounded-lg">
@@ -41,8 +43,8 @@ const MainTasks: React.FC<IMainTask> = ({ filter }) => {
             </span>
           )}
 
-          {allTasks?.map((task: TTasks) => {
-            return <TaskItem key={task.id} taskData={task} />;
+          {allTasks?.map((taskData: TTasks) => {
+            return <TaskItem key={taskData.id} taskData={taskData} />;
           })}
 
           {filter.value === EVariables.completed && (

@@ -16,13 +16,14 @@ interface ITaskItem {
 
 const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
   const { isEdit, editValue, setEditValue, handleDeleteById, handleStartEdit, handleConfirmEdit, handleChecked } = useTaskItem();
+  // console.log('taskData', taskData);
 
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
       <div className="flex justify-center items-center flex-taskItem-5">
         <CommonCheckbox
           checked={taskData?.status === EVariables.completed}
-          onChange={() => handleChecked(taskData.id, EVariables.active, EVariables.completed)}
+          onChange={() => handleChecked([taskData.id], EVariables.active, EVariables.completed)}
         />
       </div>
       <div className="flex justify-start items-center flex-taskItem-85 w-full">

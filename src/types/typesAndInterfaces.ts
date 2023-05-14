@@ -1,20 +1,21 @@
 // ========================= Types =========================
 
-export type TData = {
-  count?: TCount;
-  tasks?: TTasks;
-  ids?: string[]
-};
+import { EVariables } from "../variables";
+
+export interface TData {
+  count: TCount;
+  tasks: TTasks;
+}
 
 export type TCount = {
-  active?: number;
-  completed?: number;
+  active: number;
+  completed: number;
 };
 
 export type TTasks = {
-  text?: string;
-  status?: string;
-  id?: string;
+  text: string;
+  status: EVariables;
+  id: string;
 };
 
 export type TFiltersObject = {
@@ -25,7 +26,6 @@ export type TFiltersObject = {
 
 // ========================= Interfaces =========================
 
-export interface IRequestHelpers {
-  data?: TData;
-
-}
+// export interface IRequestHelpers {
+//   data?: TData;
+// }

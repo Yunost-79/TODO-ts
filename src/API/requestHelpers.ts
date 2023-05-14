@@ -1,5 +1,4 @@
 import { TData, TTasks } from '../types/typesAndInterfaces';
-import { IRequestHelpers } from '../types/typesAndInterfaces';
 import { EVariables } from '../variables';
 import { instance } from './axiosInstance';
 
@@ -12,7 +11,7 @@ export const getAllTodo = async () => {
   }
 };
 
-export const postTodo = async (text: TTasks, status: TTasks) => {
+export const postTodo = async (text: string, status: EVariables) => {
   try {
     await instance.post('/create-task', { text, status });
   } catch (error) {
@@ -20,7 +19,7 @@ export const postTodo = async (text: TTasks, status: TTasks) => {
   }
 };
 
-export const deleteTodoById = async (id: TTasks) => {
+export const deleteTodoById = async (id: string) => {
   try {
     await instance.delete(`/task/${id}`);
   } catch (error) {
@@ -28,7 +27,7 @@ export const deleteTodoById = async (id: TTasks) => {
   }
 };
 
-export const deleteAllCompletedTodo = async (arrayOfIds: TTasks[]) => {
+export const deleteAllCompletedTodo = async (arrayOfIds: string) => {
   try {
     await instance.delete(`/tasks/${arrayOfIds}`);
   } catch (error) {
@@ -45,9 +44,9 @@ export const updateTodo = async ({ id, text, status }: TTasks) => {
   }
 };
 
-export const changeStatus = async ({ ids, status }: { ids: TData; status: EVariables }) => {
+export const changeStatus = async ({ ids, status }: { ids: string[]; status: EVariables }) => {
   try {
-    await instance.put<IRequestHelpers>('/task/change-status', { ids, status });
+    await instance.put('/task/change-status', { ids, status });
   } catch (error) {
     console.log(error);
   }

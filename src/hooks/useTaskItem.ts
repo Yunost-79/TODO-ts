@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { changeStatus, deleteTodoById, updateTodo } from '../API/requestHelpers';
+import { EVariables } from '../variables';
 
 export const useTaskItem = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -21,7 +22,7 @@ export const useTaskItem = () => {
     setIsEdit(true);
   };
 
-  const handleConfirmEdit = (id: string, edit: string, status: string) => {
+  const handleConfirmEdit = (id: string, edit: string, status: EVariables) => {
     if (editValue && !/^ *$/.test(editValue)) {
       handleUpdateTask.mutate({ id, text: edit, status });
 
@@ -31,7 +32,7 @@ export const useTaskItem = () => {
     }
   };
 
-  const handleChecked = (ids: string, statusActive: string, statusCompleted: string) => {
+  const handleChecked = (ids: string[], statusActive: EVariables, statusCompleted: EVariables) => {
     setIsChecked(false);
     if (!isChecked) {
       handleUpdateStatus.mutate({

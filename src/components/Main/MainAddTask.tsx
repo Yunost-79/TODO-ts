@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { CommonButton } from '../UI/Common/CommonButton.styled';
 import { CommonInput } from '../UI/Common/CommonInput.styled';
 import { postTodo } from '../../API/requestHelpers';
+import { EVariables } from '../../variables';
 
 const MainAddTask = () => {
   const [todoValue, setTodoValue] = useState<string>('');
@@ -13,9 +14,7 @@ const MainAddTask = () => {
 
   const queryClient = useQueryClient();
 
-  // if change in mutation => postTodo => "active" on "completed" can see filter active and completed
-
-  const mutation = useMutation((newTodo: string) => postTodo(String(newTodo), 'active'), {
+  const mutation = useMutation((newTodo: string) => postTodo(newTodo, EVariables.active), {
     onSuccess: () => queryClient.invalidateQueries('todoData'),
   });
 
