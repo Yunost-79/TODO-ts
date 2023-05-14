@@ -12,17 +12,14 @@ import emptyImage from '../../image/empty-icon.svg';
 
 interface IMainTask {
   filter: TFiltersObject;
-  data: TData | [];
+  data?: TData;
 }
 
 const MainTasks: React.FC<IMainTask> = ({ filter }) => {
-
-  const {  data } = useQuery('todoData', getAllTodo);
-
+  const { data } = useQuery('todoData', getAllTodo);
 
   const { getFilteredTasks, handleDeleteCompleted, handleAllChangeStatus } = useMainTasks();
 
-  // useQuery when is loading data from server return undefined, So, idk how to fix it)))
   const allTasks = getFilteredTasks(data?.tasks, filter.value);
 
   return (

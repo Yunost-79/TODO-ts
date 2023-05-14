@@ -22,7 +22,7 @@ const Main: React.FC<IMain> = () => {
 
       <MainFilters filter={filter} setFilter={setFilter} />
 
-      <MainTasks filter={filter} />
+      <MainTasks filter={filter}  />
 
       <div className="my-14  text-xs text-center text-commonGrey">
         <div>Double-click on todo text to edit a task</div>
