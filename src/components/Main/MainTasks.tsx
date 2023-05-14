@@ -4,7 +4,7 @@ import { useMainTasks } from '../../hooks/useMainTasks';
 
 import { EVariables } from '../../variables';
 
-import { IRequestHelpers, TFiltersObject, TTasks } from '../../types/typesAndInterfaces';
+import { IRequestHelpers, TData, TFiltersObject, TTasks } from '../../types/typesAndInterfaces';
 
 import TaskItem from '../TaskItem/TaskItem';
 
@@ -12,7 +12,7 @@ import emptyImage from '../../image/empty-icon.svg';
 
 interface IMainTask {
   filter: TFiltersObject;
-  data?: IRequestHelpers;
+  data?: TData;
 }
 
 const MainTasks: React.FC<IMainTask> = ({ filter }) => {
@@ -20,11 +20,12 @@ const MainTasks: React.FC<IMainTask> = ({ filter }) => {
 
   const { getFilteredTasks, handleDeleteCompleted, handleAllChangeStatus } = useMainTasks();
 
-  const allTasks = getFilteredTasks(data?.tasks, filter.value);
+  const allTasks: TTasks[] = getFilteredTasks(data?.tasks, filter.value);
+  console.log(allTasks);
 
   return (
     <div className="flex flex-col justify-center items-center bg-headerColor w-3/5 px-6 py-10 gap-8 rounded-lg">
-      {!allTasks.length ? (
+      {!allTasks?.length ? (
         <div className="flex flex-col justify-center items-center my-10">
           <img className="w-24 h-24" src={emptyImage} alt="" />
           <h3 className="mt-3 text-2xl font-normal">Tasks not found</h3>

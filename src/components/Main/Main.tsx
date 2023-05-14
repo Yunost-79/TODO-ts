@@ -9,8 +9,8 @@ import { TFiltersObject } from '../../types/typesAndInterfaces';
 import { filtersItems } from '../../variables';
 
 interface IMain {
-  filter: TFiltersObject;
-  setFilter: (e: React.SetStateAction<TFiltersObject>) => void;
+  filter?: TFiltersObject;
+  setFilter?: (e: React.SetStateAction<TFiltersObject>) => void;
 }
 
 const Main: React.FC<IMain> = () => {

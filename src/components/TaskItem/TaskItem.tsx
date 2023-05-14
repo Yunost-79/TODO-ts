@@ -27,7 +27,14 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
       </div>
       <div className="flex justify-start items-center flex-taskItem-85 w-full">
         {isEdit ? (
-          <EditInputText variant="standard" focused label="Edit task" value={editValue} onChange={(e) => setEditValue(e.target.value)} />
+          <EditInputText
+            variant="standard"
+            focused
+            label="Edit task"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onBlur={() => handleConfirmEdit(taskData.id, editValue, taskData.status)}
+          />
         ) : (
           <ItemText
             isChecked={taskData?.status === EVariables.completed}
