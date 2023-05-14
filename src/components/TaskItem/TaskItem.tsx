@@ -16,7 +16,6 @@ interface ITaskItem {
 
 const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
   const { isEdit, editValue, setEditValue, handleDeleteById, handleStartEdit, handleConfirmEdit, handleChecked } = useTaskItem();
-  // console.log('taskData', taskData);
 
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">

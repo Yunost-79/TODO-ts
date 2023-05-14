@@ -16,7 +16,6 @@ export const useMainTasks = () => {
     if (filterValue === EVariables.active || filterValue === EVariables.completed) {
       return tasks?.filter((item: TTasks) => item.status === filterValue);
     }
-    console.log('tasks', tasks);
 
     return tasks;
   };
@@ -24,7 +23,6 @@ export const useMainTasks = () => {
   const handleDeleteCompleted = (tasks: TTasks[]) => {
     const completedTasks = tasks.map((task: TTasks) => task.id);
     const updated: string = JSON.stringify(completedTasks);
-    console.log('updated', typeof updated);
 
     handleDeleteAllCompleted.mutate(updated);
   };
