@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 
-import { CommonButton } from '../../UI/Common/CommonButton.styled';
-import { CommonInput } from '../../UI/Common/CommonInput.styled';
-import { postTodo } from '../../../API/requestHelpers';
+import { CommonButton } from '../UI/Common/CommonButton.styled';
+import { CommonInput } from '../UI/Common/CommonInput.styled';
+import { postTodo } from '../../API/requestHelpers';
+import { EVariables } from '../../variables';
 
-interface IMainAddTask {
-  todo?: string;
-}
-
-const MainAddTask: React.FC<IMainAddTask> = () => {
+const MainAddTask = () => {
   const [todoValue, setTodoValue] = useState<string>('');
   const [errorValue, setErrorValue] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
 
-  // if change in mutation => postTodo => "active" on "completed" can see filter active and completed
-
-  const mutation = useMutation((newTodo: string) => postTodo(String(newTodo), 'active'), {
+  const mutation = useMutation((newTodo: string) => postTodo(newTodo, EVariables.active), {
     onSuccess: () => queryClient.invalidateQueries('todoData'),
   });
 
@@ -27,9 +22,9 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
     control,
     handleSubmit,
     // formState: { errors },
-  } = useForm<IMainAddTask>({});
+  } = useForm({});
 
-  const onSubmitTodo: SubmitHandler<IMainAddTask> = () => {
+  const onSubmitTodo = () => {
     if (!todoValue) {
       setErrorValue(true);
       return;
@@ -40,7 +35,6 @@ const MainAddTask: React.FC<IMainAddTask> = () => {
       setErrorValue(false);
     }
     setTodoValue('');
-
   };
 
   return (

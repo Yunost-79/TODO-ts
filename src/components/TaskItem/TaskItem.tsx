@@ -1,83 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useMutation, useQueryClient } from 'react-query';
-
-import { deleteTodoById, changeStatus, updateTodo } from '../../API/requestHelpers';
-
-import EditItemText from './components/EditItemText';
-import ItemText from './components/ItemText';
+import ItemText from './ItemText/ItemText';
 
 import { CommonCheckbox } from '../UI/Common/CommonCheckbox.styled';
 import { CommonCloseIcon } from '../UI/Common/CommonCloseIcon.styled';
 import { CommonCheckMarkIcon } from '../UI/Common/CommonCheckMarkIcon.styled';
-import { EVariables } from '../../variables/tsVariables';
+import { EVariables } from '../../variables';
+import { useTaskItem } from '../../hooks/useTaskItem';
+import { TTasks } from '../../types/typesAndInterfaces';
+import { EditInputText } from '../UI/EditItemInput/EditInputText.styled';
 
 interface ITaskItem {
-  taskData: TData;
+  taskData: TTasks;
 }
 
 const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState<boolean>();
-  const [isEditValue, setIsEditValue] = useState<string>('');
-
-  const queryClient = useQueryClient();
-
-  const handleStartEdit = (e: React.MouseEvent<HTMLHeadingElement>, text: string) => {
-    setIsEditValue(text);
-    if (e.detail === 2) {
-      setIsEdit(true);
-    }
-  };
-
-  const handleConfirmEdit = (id: string, edit: string, status: string) => {
-    if (isEditValue && !/^ *$/.test(isEditValue)) {
-      handleUpdateTask.mutate({ id, text: edit, status });
-
-      setIsEdit(false);
-    } else {
-      handleDeleteById.mutate(id);
-    }
-  };
-
-  const handleChecked = (ids: string, statusActive: string, statusCompleted: string) => {
-    setIsChecked(false);
-    if (!isChecked) {
-      handleUpdateStatus.mutate({
-        ids,
-        status: statusCompleted,
-      });
-      setIsChecked(true);
-      return;
-    }
-
-    handleUpdateStatus.mutate({
-      ids,
-      status: statusActive,
-    });
-  };
-
-  const handleDeleteById = useMutation((id: string) => deleteTodoById(id), { onSuccess: () => queryClient.invalidateQueries('todoData') });
-
-  const handleUpdateStatus = useMutation({ mutationFn: changeStatus, onSuccess: () => queryClient.invalidateQueries('todoData') });
-
-  const handleUpdateTask = useMutation({ mutationFn: updateTodo, onSuccess: () => queryClient.invalidateQueries('todoData') });
+  const { isEdit, editValue, setEditValue, handleDeleteById, handleStartEdit, handleConfirmEdit, handleChecked } = useTaskItem();
 
   return (
     <div className="flex justify-center items-center w-full h-2 gap-y-1.5">
       <div className="flex justify-center items-center flex-taskItem-5">
         <CommonCheckbox
           checked={taskData?.status === EVariables.completed}
-          onChange={() => handleChecked(taskData.id, EVariables.active, EVariables.completed)}
+          onChange={() => handleChecked([taskData.id], EVariables.active, EVariables.completed)}
         />
       </div>
       <div className="flex justify-start items-center flex-taskItem-85 w-full">
         {isEdit ? (
-          <EditItemText value={isEditValue} onChange={(e) => setIsEditValue(e.target.value)} />
+          <EditInputText
+            variant="standard"
+            focused
+            label="Edit task"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onBlur={() => handleConfirmEdit(taskData.id, editValue, taskData.status)}
+          />
         ) : (
           <ItemText
             isChecked={taskData?.status === EVariables.completed}
-            onClick={(e) => handleStartEdit(e, taskData.text)}
+            onDoubleClick={() => handleStartEdit(taskData.text)}
             confirmEditedText={taskData.text}
             taskData={taskData}
           />
@@ -85,7 +46,7 @@ const TaskItem: React.FC<ITaskItem> = ({ taskData }) => {
       </div>
 
       <div className="flex justify-center items-center flex-taskItem-10">
-        <CommonCheckMarkIcon className={`${!isEdit && 'invisible'}`} onClick={() => handleConfirmEdit(taskData.id, isEditValue, taskData.status)} />
+        <CommonCheckMarkIcon className={`${!isEdit && 'invisible'}`} onClick={() => handleConfirmEdit(taskData.id, editValue, taskData.status)} />
       </div>
       <div className="flex justify-center items-center flex-taskItem-5">
         <CommonCloseIcon
